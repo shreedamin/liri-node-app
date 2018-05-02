@@ -12,6 +12,7 @@ var client = new twitter(keys.twitter);
 var argv = process.argv;
 var action = process.argv[2];
 var x = "";
+
 //mutilple words
 for (var i=3; i<argv.length; i++){
     if(i>3 && i<argv.length){
@@ -20,10 +21,11 @@ for (var i=3; i<argv.length; i++){
       x = x + argv[i];
     }
   }
+
 //commands
 switch(action){
     case "my-tweets":
-    myTweets();
+        myTweets();
     break;
 
     case "spotify-this-song":
@@ -35,15 +37,15 @@ switch(action){
     break;
 
     case "movie-this":
-    if(x){
-        myMovie(x);
-    }else{
-        myMovie("Mr. Nobody")
-    }
+        if(x){
+            myMovie(x);
+        }else{
+            myMovie("Mr. Nobody")
+        }
     break;
 
     case "do-what-it-says":
-    myDoWhat();
+        myDoWhat();
     break;
     
 }
@@ -53,15 +55,15 @@ function myTweets(){
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
       if (!error) {
         console.log("twitter is good");
-        for(let i = 0; i<tweets.length; i++){
+        for(var i = 0; i < tweets.length; i++){
             //tweet
-            console.log(tweets[i].text)
+            console.log(tweets[i].text);
             //tweet timestamp
-            console.log(tweets[i].created_at)
+            console.log(tweets[i].created_at);
 
         }
       }else{
-          console.log("Twiiter is broken")
+          console.log("Twiiter is broken" + error)
       }
     })
 };
@@ -70,30 +72,30 @@ function mySpotify(song){
     spotify.search({ type: "track", query: song}, function(error, data){
         if(!error){
             for(var i = 0; i < data.tracks.items.length; i++){
-                var song = songData.tracks.items[i];
+                var song = data.tracks.items[i];
                 console.log("_______________________________")
                 //artist name
-                console.log(songData.artists[0].name);
+                console.log(data.tracks.items[0].artists[0].name);
                 //song name
-                console.log(songData.name);
+                console.log(data.tracks.items[0].name);
                 //link to song
-                console.log(songData.preview_url);
+                console.log(data.tracks.items[0].preview_url);
                 //album
-                console.log(songData.album.name);
+                console.log(data.tracks.items[0].album.name);
                 console.log("_______________________________")
             }
         }else{
-            console.log("Spotify is broken");
+            console.log("Spotify is broken" + error);
         }if(song === "" ){
             console.log("_______________________________")
             //artist name
-            console.log(songData.artists[0].name);
+            console.log(data.tracks.items[0].artists[0].name);
             //song name
-            console.log(songData.name);
+            console.log(data.tracks.items[0].name);
             //link to song
-            console.log(songData.preview_url);
+            console.log(data.tracks.items[0].preview_url);
             //album
-            console.log(songData.album.name);
+            console.log(data.tracks.items[0].album.name);
             console.log("_______________________________")
         }
     })
