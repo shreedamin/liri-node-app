@@ -2,12 +2,11 @@
 require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
-var twitter = require("twitter");
+var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
-var client = new twitter(keys.twitter);
-
+var client = new Twitter(keys.twitter);
 //variables
 var argv = process.argv;
 var action = process.argv[2];
@@ -53,17 +52,15 @@ switch(action){
 function myTweets(){
     var params = {screen_name: 'shreedamin', count: 20};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
-      if (!error) {
-        console.log("twitter is good");
-        for(var i = 0; i < tweets.length; i++){
-            //tweet
-            console.log(tweets[i].text);
-            //tweet timestamp
-            console.log(tweets[i].created_at);
-
-        }
+      if (error) {
+          console.log(error);
       }else{
-          console.log("Twiiter is broken" + error)
+        console.log("twitter is good");
+        for(let i = 0; i < tweets.length; i++){
+            //tweet + tweet timestamp
+            console.log("Shreedamin tweeted: " + tweets[i].text + "@: " + tweets[i].created_at);
+            console.log("------------------------------------------------------");
+        };
       }
     })
 };
